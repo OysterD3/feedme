@@ -13,7 +13,7 @@ type QueueData = {
   type: QueueType;
 };
 type QueueMethods = {
-  enqueue: (type: QueueType) => void;
+  enqueue: (type: QueueType) => QueueData;
   dequeue: (id: string) => null | QueueData;
 };
 
@@ -26,18 +26,17 @@ export const useQueue = (
     state,
     {
       enqueue: (type) => {
+        const item = {
+          id: uuidv4(),
+          label: `Order #${currentRunningNumber.value} (${
+            type === QUEUE_TYPE.vip ? 'VIP' : 'Normal'
+          })`,
+          type,
+          status: QUEUE_STATUS.pending,
+        };
         if (type === QUEUE_TYPE.normal) {
-          state.push({
-            id: uuidv4(),
-            label: `Order #${currentRunningNumber.value} (Normal)`,
-            type,
-          });
+          state.push(item);
         } else {
-          const item = {
-            id: uuidv4(),
-            label: `Order #${currentRunningNumber.value} (VIP)`,
-            type,
-          };
           if (state.length === 0) {
             state.push(item);
           } else {
@@ -54,6 +53,7 @@ export const useQueue = (
           }
         }
         currentRunningNumber.value += 1;
+        return item;
       },
       dequeue: (id) => {
         const idx = state.findIndex((v) => v.id === id);

@@ -15,6 +15,7 @@ type QueueData = {
 type QueueMethods = {
   enqueue: (type: QueueType) => QueueData;
   dequeue: (id: string) => null | QueueData;
+  updateStatus: (id: string, status: QueueStatus) => void;
 };
 
 export const useQueue = (
@@ -63,6 +64,12 @@ export const useQueue = (
           state.splice(idx, 1);
         }
         return item;
+      },
+      updateStatus: (id, status) => {
+        const idx = state.findIndex((v) => v.id === id);
+        if (idx >= 0) {
+          state[idx].status = status;
+        }
       },
     },
   ];

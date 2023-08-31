@@ -13,7 +13,7 @@ export const QUEUE_STATUS = {
 
 export type QueueType = (typeof QUEUE_TYPE)[keyof typeof QUEUE_TYPE];
 type QueueStatus = (typeof QUEUE_STATUS)[keyof typeof QUEUE_STATUS];
-type QueueData = {
+export type QueueData = {
   id: string;
   label: string;
   type: QueueType;

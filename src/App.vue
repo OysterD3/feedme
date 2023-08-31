@@ -1,51 +1,9 @@
 <template>
   <div class="flex space-x-lg">
-    <Card>
-      <CardTitle>On-going orders</CardTitle>
-      <List>
-        <ListItem v-for="item in queue" :key="item.id">
-          <template #text>
-            <Typography type="title">{{ item.label }}</Typography>
-            <Typography type="subtitle">{{ item.id }}</Typography>
-          </template>
-          <template #action>
-            <Badge :status="item.status">
-              {{ item.status.toLowerCase() }}
-            </Badge>
-          </template>
-        </ListItem>
-      </List>
-    </Card>
-    <Card>
-      <CardTitle>Completed orders</CardTitle>
-      <List>
-        <ListItem v-for="item in completedOrders" :key="item.id">
-          <template #text>
-            <Typography type="title">{{ item.label }}</Typography>
-            <Typography type="subtitle">{{ item.id }}</Typography>
-          </template>
-        </ListItem>
-      </List>
-    </Card>
+    <OngoingOrders :items="queue" />
+    <CompletedOrders :items="completedOrders" />
   </div>
-  <Card>
-    <CardTitle>Bots</CardTitle>
-    <List>
-      <ListItem v-for="(item, idx) in bots" :key="idx">
-        <template #text>
-          <Typography type="title">Bot #{{ idx + 1 }}</Typography>
-          <Typography v-if="item.processingId" type="subtitle">
-            Processing Order ID: {{ item.processingId }}
-          </Typography>
-        </template>
-        <template #action>
-          <Badge :status="item.status">
-            {{ item.status.toLowerCase() }}
-          </Badge>
-        </template>
-      </ListItem>
-    </List>
-  </Card>
+  <BotsCard :items="bots" />
   <div class="flex gap-4">
     <Button @click="() => addOrder(QUEUE_TYPE.normal)">New Normal Order</Button>
     <Button @click="() => addOrder(QUEUE_TYPE.vip)">New VIP Order</Button>
@@ -64,12 +22,9 @@ import {
 import { reactive, ref } from 'vue';
 import { Bot, BOT_STATUS } from './models/Bot.ts';
 import Button from './components/Button/Button.vue';
-import List from './components/List/List.vue';
-import ListItem from './components/List/ListItem.vue';
-import Typography from './components/Typography/Typography.vue';
-import Badge from './components/Badge/Badge.vue';
-import Card from './components/Card/Card.vue';
-import CardTitle from './components/Card/CardTitle.vue';
+import OngoingOrders from './components/OngoingOrders.vue';
+import CompletedOrders from './components/CompletedOrders.vue';
+import BotsCard from './components/BotsCard.vue';
 
 const [queue, { enqueue, dequeue, updateStatus }] = useQueue();
 const bots = ref<Bot[]>([]);

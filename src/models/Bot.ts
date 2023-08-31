@@ -23,7 +23,7 @@ export class Bot {
     this.processingId = id;
     const done = () =>
       new Promise((resolve, reject) => {
-        const timeout = setTimeout(resolve, 1000 * 5);
+        const timeout = setTimeout(resolve, 1000 * 10);
 
         this.signal.addEventListener('abort', () => {
           clearTimeout(timeout);

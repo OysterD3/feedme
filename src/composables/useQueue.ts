@@ -6,11 +6,18 @@ export const QUEUE_TYPE = {
   normal: 'NORMAL',
 } as const;
 
-type QueueType = (typeof QUEUE_TYPE)[keyof typeof QUEUE_TYPE];
+export const QUEUE_STATUS = {
+  pending: 'PENDING',
+  processing: 'PROCESSING',
+} as const;
+
+export type QueueType = (typeof QUEUE_TYPE)[keyof typeof QUEUE_TYPE];
+type QueueStatus = (typeof QUEUE_STATUS)[keyof typeof QUEUE_STATUS];
 type QueueData = {
   id: string;
   label: string;
   type: QueueType;
+  status: QueueStatus;
 };
 type QueueMethods = {
   enqueue: (type: QueueType) => QueueData;
